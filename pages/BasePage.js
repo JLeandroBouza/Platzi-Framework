@@ -55,8 +55,14 @@ export default class BasePage{
             await page.waitForSelector(selector)
             await page.click(selector)
         }catch (e){
-            throw new Error(`Error al dar click en el Selector ${selector}`)
-        }    
+            try{
+                const element=  page.waitForXPath(selector)
+                element.click()           
+            } catch(e){
+                throw new Error(`Error al dar click en el Selector ${selector}`)
+            }
+            throw new Error(`Error al dar click en el Selector ${selector}`)   
+        }
     }
 
     async type(selector,text,opts={}){
